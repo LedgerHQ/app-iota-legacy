@@ -1,38 +1,32 @@
 # IOTA App for Ledger Hardware Wallets
 
-[![Build Status](https://travis-ci.org/IOTA-Ledger/blue-app-iota.svg?branch=master)](https://travis-ci.org/IOTA-Ledger/blue-app-iota)
-
-Here we try to use natively available crypto logic to create IOTA seeds and sign transactions on the fly.<br>
 
 ***It is strongly recommended to take a few minutes to read this document to make sure you fully understand how IOTA and the Ledger Hardware Wallet works, and how they interact together.***
 
 ## Table of contents
 
-* [Introduction](#introduction)
-  + [Terminology](#terminology)
-  + [Address Reuse](#address-reuse)
-  + [IOTA Bundle](#iota-bundle)
-  + [Parts of an IOTA Transaction](#parts-of-an-iota-transaction)
-* [How Ledger Hardware Wallets Work](#how-ledger-hardware-wallets-work)
-* [IOTA Specific Considerations for Ledger Hardware Wallets](#iota-specific-considerations-for-ledger-hardware-wallets)
-  + [IOTA User-Facing App Functions](#iota-user-facing-app-functions)
-    - [Functions](#functions)
-    - [Display](#display)
-  + [Recovery Phrase Entropy](#recovery-phrase-entropy)
-  + [IOTA Security Concerns Relating to Ledger Hardware Wallets](#iota-security-concerns-relating-to-ledger-hardware-wallets)
-  + [Limitations of Ledger Hardware Wallets](#limitations-of-ledger-hardware-wallets)
-* [FAQ](#faq)
-    - [I lost my ledger, what should I do now?](#i-lost-my-ledger-what-should-i-do-now)
-* [Development](#development)
-  + [Preparing development environment under Ubuntu 17.10](#preparing-development-environment-under-ubuntu-1710)
-  + [Preparing development environment in other distributions](#preparing-development-environment-in-other-distributions)
-  + [Compile and load the IOTA Ledger app](#compile-and-load-the-iota-ledger-app)
-* [Documentation](#documentation)
-* [Contributing](#contributing)
-  + [Donations](#donations)
-  + [As a developer](#as-a-developer)
-
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+- [IOTA App for Ledger Hardware Wallets](#iota-app-for-ledger-hardware-wallets)
+  - [Table of contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [Terminology](#terminology)
+    - [Address Reuse](#address-reuse)
+    - [IOTA Bundle](#iota-bundle)
+    - [Parts of an IOTA Transaction](#parts-of-an-iota-transaction)
+  - [How Ledger Hardware Wallets Work](#how-ledger-hardware-wallets-work)
+  - [IOTA Specific Considerations for Ledger Hardware Wallets](#iota-specific-considerations-for-ledger-hardware-wallets)
+    - [IOTA User-Facing App Functions](#iota-user-facing-app-functions)
+      - [Functions](#functions)
+      - [Display](#display)
+    - [Recovery Phrase Entropy](#recovery-phrase-entropy)
+    - [IOTA Security Concerns Relating to Ledger Hardware Wallets](#iota-security-concerns-relating-to-ledger-hardware-wallets)
+    - [Limitations of Ledger Hardware Wallets](#limitations-of-ledger-hardware-wallets)
+  - [FAQ](#faq)
+      - [I lost my ledger, what should I do now?](#i-lost-my-ledger-what-should-i-do-now)
+  - [Development](#development)
+    - [Load the IOTA Ledger app using Docker](#load-the-iota-ledger-app-using-docker)
+    - [Speculos support](#speculos-support)
+  - [Specification](#specification)
+    - [As a developer](#as-a-developer)
 
 ---
 
@@ -119,8 +113,8 @@ For the Ledger Nano S:
 
 - Two bars along the top (just below the buttons) indicates that there is a double press function available (generally confirm/toggle or back). We will be working to ensure this function is always intuitive.
 
-For the Ledger Blue:
-- The Ledger Blue uses a touchscreen, thus all you need to do is tap the buttons on the screen.
+For the Ledger Nano S+/X:
+- Behavior is the same as the Nano S. Graphically there are no confirmation bars along the top (but double pressing the buttons still confirms/toggles).
 
 ### Recovery Phrase Entropy
 
@@ -138,10 +132,8 @@ All warnings on the Ledger are there for a reason, **MAKE SURE TO READ THEM** an
 
     When generating a transaction for the Ledger to sign, you will scroll through each transaction before signing off on the bundle. The transaction information will come up in order (while scrolling from left to right). 
     
-    On the Ledger Nano S, the first screen will display the tx type (output, input, or change), as well as the amount. The next screen will display the corresponding address for said transaction. This will repeat until all transactions have been displayed, then you can select "Approve" or "Deny".
+    On the Ledger Nano S/S+/X, the first screen will display the tx type (output, input, or change), as well as the amount. The next screen will display the corresponding address for said transaction. This will repeat until all transactions have been displayed, then you can select "Approve" or "Deny".
     
-    On the Ledger Blue each transaction entry in a bundle will fit on the screen, use the next button until you've confirmed all transactions and then select approve if everything is correct.
-
     - All output transactions to 3rd party addresses will say "Output:" and below that "1.56 Mi" (for example). "Output" being the key word here.
 
         All input transactions will say "Input: [0]", and the final output transaction (the change transaction) will say "Change: [4]" ([4] being the seed-index of the change tx). This means the Ledger has verified the addresses used for inputs as well as the change tx all belong to the Ledger.
@@ -164,9 +156,9 @@ All warnings on the Ledger are there for a reason, **MAKE SURE TO READ THEM** an
 
 ### Limitations of Ledger Hardware Wallets
 
-Due to the memory limitations of both the Ledger Nano S and the Ledger Blue, the transaction bundles have certain restrictions. The Ledger Nano S can only accept a transaction with a maximum bundle size of 8 and the Ledger Blue is limited to a maximum bundle size of 20.
+Due to the memory limitations of the Ledger Nano S/S+/X, the transaction bundles have certain restrictions. They can only accept a transaction with a maximum bundle size of 10.
 
-An output and a change transaction each only require 1 bundle entry, however every input transaction requires the same number of bundle entries as the security level being used on the seed. Thus if using a Ledger Nano S you could have 1 output + 3 inputs (security level 2) + 1 change transaction and this would take up all 8 bundle entries. For security level 3 you could only have 1 output + 2 inputs + 1 change transaction.
+An output and a change transaction each only require 1 bundle entry, however every input transaction requires the same number of bundle entries as the security level being used on the seed. Thus if using a Ledger Nano S/S+ or X you could have 1 output + 4 inputs (security level 2) + 1 change transaction and this would take up all 10 bundle entries. For security level 3 you could only have 1 output + 2 inputs + 1 change transaction, or 1 output + 3 inputs without a change transaction.
 
 *Security level 2 is the default security level.*
 
@@ -184,60 +176,38 @@ Another approach is to use our seed recovery tool which can be found here: https
 
 ## Development
 
-### Preparing development environment under Ubuntu 17.10
+### Load the IOTA Ledger app using Docker
+
+The easist way to load the app without needing to download and prepare a development environment uses Docker:
 
 - Clone this repo
-- Execute the following commands to setup your development environment:
-```
-cd blue-app-iota
-chmod +x install_dev_env.sh
-chmod +x activate_virt_env.sh
-./install_dev_env.sh
-```
-- If you execute it for the first time, maybe you have to log out and log in again to get correct group rights
-
-### Preparing development environment in other distributions
-
-- Clone this repo, and set up your development environment according to this: [LedgerHQ Getting Started](https://github.com/LedgerHQ/ledger-dev-doc/blob/master/source/userspace/getting_started.rst)
-- ATTENTION: Ledger Python 2 library seems to be broken, so you have to use Python 3 and the latest version of the ledger Python lib from their [GitHub](https://github.com/LedgerHQ/blue-loader-python). Have a look here:
-
-> I was unable to install the recent update of the Ledger SDK with their direct instructions. Instead, follow everything from the link above, except for the Python SDK.
-> Instead of running Python 2 like explicitly being told, use Python 3 instead (I wasn't able to make it work with Python 2 and the commits of their latest updates over the past week suggest they created Python 3 support).
-> In the part where they tell you to run `pip install ledgerblue`, run `pip install git+https://github.com/LedgerHQ/blue-loader-python.git` to install the bleeding-edge version.
-
-### Compile and load the IOTA Ledger app
-
+- Ensure that all git submodules are initialized
+    ```
+    git submodule update --init --recursive
+    ```
+- Build the App based on the current version for the Nano S
+    ```
+    ./build.sh -m nanos
+    ```
 - Connect your Ledger to the PC and unlock it
-- To load the app, be sure that the dashboard is opened in the Ledger
-- Run the following commands to compile the app from source and load it
-```
-cd blue-app-iota
-
-# If you have installed using the automated script:
-./activate_virt_env.sh
-
-make load
-```
+- Load the app
+    ```
+    ./build.sh -l -m nanos
+    ```
 - Accept all the messages on the Ledger
-- You can now make your first IOTA Ledger address by running the following command (while Ledger is plugged in and the IOTA App is opened):
+
+### Speculos support
+
+The Speculos simulator can be started by:
 ```
-python demos/python/demo.py
+./build.sh -m nanos -s
 ```
+
+After starting, speculos provides a website that can be accessed by opening the URL http://localhost:5000 in a web browser.
 
 ## Specification
 
 See: [APDU API Specification](/docs/specification.md)
-
-## Contributing
-
-### Donations
-Would you like to donate to help the development team? Send some IOTA to the following address:
-```
-ADLJXS9SKYQKMVQFXR9JDUUJHJWGDNWHQZMDGJFGZOX9BZEKDSXBSPZTTWEYPTNM9OZMYDQWZXFHRTXRCOITXAGCJZ
-```
-![IOTA Ledger Donation](resources/ledger_donation.png)
-
-Please know that the donations made to this address will be shared with everyone who contributes (the contributions has to be worth something, of course)
 
 ### As a developer
 Would you like to contribute as a dev? Please check out our [Discord channel](https://discord.gg/U3qRjZj) to contact us!

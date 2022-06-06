@@ -2,13 +2,8 @@
 #include "api.h"
 #include <string.h>
 
-#ifdef TARGET_BLUE
-#include "blue/blue_types.h"
-#define MENU_IDX_BREAK blue_ui_state.menu_idx
-#else
 #include "nano/nano_types.h"
 #define MENU_IDX_BREAK ui_state.menu_idx / 2
-#endif // TARGET_BLUE
 
 /// the different IOTA units
 const char IOTA_UNITS[][3] = {"i", "Ki", "Mi", "Gi", "Ti", "Pi"};

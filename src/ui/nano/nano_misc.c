@@ -49,7 +49,7 @@ static char *get_str_buffer(UI_TEXT_POS pos)
         return ui_text.bot_str;
     case MID:
         return ui_text.mid_str;
-#ifdef TARGET_NANOX
+#if defined(TARGET_NANOX) || defined(TARGET_NANOS2)
     case POS_X:
         return ui_text.x_str;
 #endif
@@ -83,7 +83,7 @@ static void clear_text()
     write_display(NULL, TOP);
     write_display(NULL, MID);
     write_display(NULL, BOT);
-#ifdef TARGET_NANOX
+#if defined(TARGET_NANOX) || defined(TARGET_NANOS2)
     write_display(NULL, POS_X);
 #endif
 }
@@ -99,7 +99,7 @@ static void clear_glyphs()
     FLAG_OFF(GLYPH_BACK);
 #ifdef TARGET_NANOS
     FLAG_OFF(GLYPH_CONFIRM);
-#else // NANOX
+#else // NANOX, S+
     FLAG_OFF(GLYPH_INFO);
     FLAG_OFF(GLYPH_CHECK);
     FLAG_OFF(GLYPH_CROSS);

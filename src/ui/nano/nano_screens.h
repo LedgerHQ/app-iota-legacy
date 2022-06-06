@@ -14,7 +14,7 @@ static const bagl_element_t bagl_ui_omega_screen[] = {
     SCREEN_MSG_TOP_BOLD, SCREEN_MSG_BOT_BOLD, SCREEN_MSG_TOP_HALF,
     SCREEN_MSG_MID,      SCREEN_MSG_BOT_HALF, SCREEN_GLYPHS_ALL};
 
-#else // NANOX
+#else // NANOX, S+
 
 #include "x_elements.h"
 

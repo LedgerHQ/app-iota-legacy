@@ -36,7 +36,7 @@ void display_main_menu()
         write_display("IOTA", MID);
         break;
 
-#ifdef TARGET_NANOX
+#if defined(TARGET_NANOX) || defined(TARGET_NANOS2)
     case MENU_MAIN_ABOUT:
         display_glyphs(GLYPH_INFO, GLYPH_UP);
         glyph_on(GLYPH_DOWN);
@@ -75,7 +75,7 @@ void display_about()
         write_display(NULL, TOP_H);
         display_glyphs_confirm(GLYPH_UP, GLYPH_BACK);
         break;
-#else  // NANOX
+#else // NANOX, S+
     case MENU_ABOUT_VERSION:
         write_display("Version", TOP);
         write_display(APPVERSION, BOT);
@@ -283,7 +283,7 @@ void display_prompt_tx()
     if (ui_state.menu_idx == MENU_TX_APPROVE) {
         write_display("Approve", MID);
         display_glyphs_confirm(GLYPH_UP, GLYPH_DOWN);
-#ifdef TARGET_NANOX
+#if defined(TARGET_NANOX) || defined(TARGET_NANOS2)
         glyph_on(GLYPH_CHECK);
 #endif
         return;
@@ -291,7 +291,7 @@ void display_prompt_tx()
     else if (ui_state.menu_idx == MENU_TX_DENY) {
         write_display("Deny", MID);
         display_glyphs_confirm(GLYPH_UP, GLYPH_DOWN);
-#ifdef TARGET_NANOX
+#if defined(TARGET_NANOX) || defined(TARGET_NANOS2)
         glyph_on(GLYPH_CROSS);
 #endif
         return;

@@ -7,11 +7,9 @@
 // the largest bundle size due to memory limitations per device
 #ifdef TARGET_NANOS
 #define MAX_BUNDLE_SIZE 8
-#elif defined TARGET_NANOX
+#else
 #define MAX_BUNDLE_SIZE 10
-#else // BLUE
-#define MAX_BUNDLE_SIZE 20
-#endif // TARGET_NANOS/X/BLUE
+#endif // NANO X/S+
 
 typedef struct BUNDLE_CTX {
     // bundle_bytes holds all of the bundle information in byte encoding

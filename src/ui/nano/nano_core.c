@@ -6,7 +6,7 @@
 #include "nano_buttons.h"
 #include "nano_types.h"
 
-#if defined(TARGET_NANOS) || defined(TARGET_NANOX)
+#if defined(TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2)
 #define TARGET_NANO
 #endif
 
@@ -15,7 +15,7 @@
 
 #ifdef TARGET_NANOS
 #include "s_elements.h"
-#else // NANOX
+#else // NANOX, S+
 #include "x_elements.h"
 #endif
 
@@ -54,7 +54,7 @@ void nano_set_screen(UI_SCREENS_NANO s)
     case SCREEN_BACK:
         FLAG_ON(EL_MENU);
         break;
-#else // NANOX
+#else // NANOX, S+
     case SCREEN_TITLE:
         FLAG_ON(EL_TITLE);
         break;
