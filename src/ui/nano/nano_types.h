@@ -85,7 +85,7 @@ typedef enum {
     GLYPH_LOAD,
     GLYPH_CHECK,
     GLYPH_CROSS,
-    GLYPH_UP,   // maps to left
+    GLYPH_UP, // maps to left
     GLYPH_DOWN, // maps to right
     GLYPH_NONE
 } UI_GLYPH_TYPES_NANO;
@@ -99,7 +99,7 @@ typedef enum {
     EL_LOAD,
     EL_CHECK,
     EL_CROSS,
-    EL_UP,   // maps to left
+    EL_UP, // maps to left
     EL_DOWN, // maps to right
     EL_NONE,
     EL_TITLE,
@@ -135,8 +135,8 @@ typedef enum {
     STATE_VERSION,
     STATE_MORE_INFO,
     STATE_DISP_ADDR_CHK, // Abbreviated address with Checksum
-    STATE_DISP_ADDR,     // Host displays pubkey on ledger
-    STATE_TX_ADDR,       // Display full address in TX
+    STATE_DISP_ADDR, // Host displays pubkey on ledger
+    STATE_TX_ADDR, // Display full address in TX
     STATE_PROMPT_TX,
     STATE_BIP_PATH,
     STATE_EXIT = 255

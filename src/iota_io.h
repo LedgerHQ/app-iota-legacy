@@ -49,24 +49,24 @@ enum {
 
 // invalid data
 
-#define SW_INCORRECT_LENGTH 0x6700     ///< received length invalid for command
+#define SW_INCORRECT_LENGTH 0x6700 ///< received length invalid for command
 #define SW_COMMAND_INVALID_DATA 0x6a80 ///< invalid command data
-#define SW_INCORRECT_P1P2 0x6b00       ///< invalid parameter
-#define SW_INCORRECT_LENGTH_P3 0x6c00  ///< received length does not match P3
-#define SW_INS_NOT_SUPPORTED 0x6d00    ///< invalid INS code
-#define SW_CLA_NOT_SUPPORTED 0x6e00    ///< invalid CLA code
+#define SW_INCORRECT_P1P2 0x6b00 ///< invalid parameter
+#define SW_INCORRECT_LENGTH_P3 0x6c00 ///< received length does not match P3
+#define SW_INS_NOT_SUPPORTED 0x6d00 ///< invalid INS code
+#define SW_CLA_NOT_SUPPORTED 0x6e00 ///< invalid CLA code
 
 // command not allowed or invalid
 
-#define SW_COMMAND_NOT_ALLOWED 0x6900             ///< invalid state for command
-#define SW_SECURITY_STATUS_NOT_SATISFIED 0x6982   ///< dongle locked
+#define SW_COMMAND_NOT_ALLOWED 0x6900 ///< invalid state for command
+#define SW_SECURITY_STATUS_NOT_SATISFIED 0x6982 ///< dongle locked
 #define SW_CONDITIONS_OF_USE_NOT_SATISFIED 0x6985 ///< denied by user
-#define SW_INVALID_BUNDLE 0x69a0 /* +retcode */   ///< invalid bundle received
+#define SW_INVALID_BUNDLE 0x69a0 /* +retcode */ ///< invalid bundle received
 
 // command aborted
 
 #define SW_COMMAND_TIMEOUT 0x6401 ///< next command or user input timeout
-#define SW_UNKNOWN 0x6f00         ///< command aborted
+#define SW_UNKNOWN 0x6f00 ///< command aborted
 
 // aliases
 

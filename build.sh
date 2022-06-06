@@ -20,7 +20,7 @@ cd $rpath
 
 # use the latest images
 IMAGE_BUILD="ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:latest"
-IMAGE_SPECULOS="ghcr.io/ledgerhq/speculos:sha-5a8e49b"
+IMAGE_SPECULOS="ghcr.io/ledgerhq/speculos:latest"
 
 function error {
     echo "error: $1"
@@ -35,11 +35,15 @@ function usage {
     echo "-s|--speculos: run app after building with the speculos simulator"
     echo "-c|--cxlib:    don't autodetect cx-lib version (for speculos)"
     echo "-g|--gdb:      start speculos with -d (waiting for gdb debugger)"
+    echo "-a|--analyze   run static code analysis"
     exit 1
 }
 
 # pull and tag image 
 function pull_image {
+    # already pulled?
+    docker inspect --type=image "$2" >& /dev/null && return 0
+
     docker image pull "$1" && \
     docker image tag "$1" "$2"
 }
@@ -51,16 +55,18 @@ whoami="$( whoami )"
     error "please don't run the script as root or with sudo."
 }
 
-# and if the user has permissions to use docker
-grep -q docker <<< "$( id -Gn $whoami )" || {
-    echo "user $whoami not in docker group."
-    echo "to add the user you can use (on Ubuntu):"
-    echo
-    echo "sudo usermod -a -G docker $whoami"
-    echo
-    echo "after adding, logout and login is required"
-    exit 1
-}
+if [ "$(uname)" == "Linux" ]; then
+    # and if the user has permissions to use docker
+    grep -q docker <<< "$( id -Gn $whoami )" || {
+        echo "user $whoami not in docker group."
+        echo "to add the user you can use (on Ubuntu):"
+        echo
+        echo "sudo usermod -a -G docker $whoami"
+        echo
+        echo "after adding, logout and login is required"
+        exit 1
+    }
+fi
 
 # let's parse argments
 device="nanos" # default
@@ -69,6 +75,7 @@ load=0
 speculos=0
 debug=0
 gdb=0
+analysis=0
 cxlib=""
 while (( $# ))
 do
@@ -95,6 +102,9 @@ do
         ;;
     "-g" | "--gdb")
         gdb=1
+        ;;
+    "-a" | "--analyze")
+        analysis=1
         ;;
     *)
         error "unknown parameter: $1"
@@ -178,9 +188,15 @@ build_flags=""
     build_flags+="DEBUG=1 "
 }
 
+extra_args=""
+
+(( analysis )) && {
+    build_flags+=" scan-build --use-cc=clang -analyze-headers -enable-checker security -enable-checker unix -enable-checker valist -o scan-build --status-bugs "
+    extra_args+="-v /tmp:/app/scan-build "
+}
+
 # default make cmd
 cmd="make clean && $build_flags make "
-extra_args=""
 
 # we have to map usb into the docker when loading the app
 (( $load )) && {

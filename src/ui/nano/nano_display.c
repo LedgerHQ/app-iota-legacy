@@ -75,7 +75,7 @@ void display_about()
         write_display(NULL, TOP_H);
         display_glyphs_confirm(GLYPH_UP, GLYPH_BACK);
         break;
-#else  // NANOX, S+
+#else // NANOX, S+
     case MENU_ABOUT_VERSION:
         write_display("Version", TOP);
         write_display(APPVERSION, BOT);

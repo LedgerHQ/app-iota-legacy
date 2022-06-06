@@ -7,7 +7,7 @@
 // the largest bundle size due to memory limitations per device
 #ifdef TARGET_NANOS
 #define MAX_BUNDLE_SIZE 8
-#else 
+#else
 #define MAX_BUNDLE_SIZE 10
 #endif // NANO X/S+
 
